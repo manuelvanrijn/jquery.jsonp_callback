@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8" />
+
+  <!-- Set the viewport width to device width for mobile -->
+  <meta name="viewport" content="width=device-width" />
+  <meta name="author" content="Manuel van Rijn">
+  <meta name="description" content="jQuery plugin for performing jsonp request with additional arguments/parameters passed to the callback">
+
+  <title>jquery.jsonp_callback</title>
+
+  <!-- Included CSS Files (Uncompressed) -->
+  <!--
+  <link rel="stylesheet" href="stylesheets/foundation.css">
+  -->
+
+  <!-- Included CSS Files (Compressed) -->
+  <link rel="stylesheet" href="stylesheets/foundation.min.css">
+  <link rel="stylesheet" href="stylesheets/prettify.css">
+  <link rel="stylesheet" href="stylesheets/app.css">
+
+  <script src="javascripts/modernizr.foundation.js"></script>
+
+  <!-- IE Fix for HTML5 Tags -->
+  <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+<body onload="prettyPrint()">
+
+  <div class="row">
+    <div class="twelve columns">
+      <h1>jquery.jsonp_callback</h1>
+      <h3 class="subheader">JSONP request with <strong>additional arguments</strong> for the callback</h3>
+      <hr />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="twelve columns">
+      <h3>Intro</h3>
+
+      <div class="row">
+        <div class="nine columns">
+          <p>When performing a <strong>JSONP</strong> request we can only specify <code>http://url.org/file.json?callback=?</code> which results in a by jQuery created function, returning only the responded json<p>
+          <p>When performing JSONP calls within a loop we are unable to determ in which order the request will complete and also unable to add <strong>additional arguments</strong> to the callback.</p>
+          <p>This small plugin helps you in these cases by giving you the ability to add <strong>additional arguments</strong> to the callback function.
+        </div>
+        <div class="three columns">
+          <a class="button success" href="https://github.com/manuelvanrijn/jquery.jsonp_callback">Github</a>
+          <a class="button" href="https://github.com/manuelvanrijn/jquery.jsonp_callback/zipball/master">Download</a>
+        </div>
+      </div>
+
+      <hr />
+
+      <h4>Problem example:</h4>
+      <div class="row">
+        <div class="three columns">
+          <h5 class="subheader">The result</h5>
+          <ul id="problem_result"></ul>
+          <button class="button secondary" id="problem">Perform $.getJSON()</button>
+        </div>
+        <div class="nine columns">
+          <h5 class="subheader">The code</h5>
+          <pre class="prettyprint linenums languague-js">
+var url = 'http://jsfiddle.net/echo/jsonp/';
+var items = ['item1', 'item2', 'item3', 'item4', 'item5'];
+
+$(&quot;#problem&quot;).click(function() {
+  $(&quot;#problem_result li&quot;).remove();
+
+  for(var i=0; i &lt; items.length; i++) {
+    var name = items[i];
+    $.getJSON(url+'?callback=?', {item_name: name}, function(data) {
+      $('&lt;li /&gt;')
+        .html('item: ' + name + ' json result: ' + data.item_name)
+        .appendTo(&quot;#problem_result&quot;);
+    });
+  }
+});</pre>
+        </div>
+      </div>
+
+      <hr />
+
+      <h4>Solution example:</h4>
+      <div class="row">
+        <div class="three columns">
+          <h5 class="subheader">The result</h5>
+          <ul id="solution_result"></ul>
+          <button class="button secondary" id="solution">Perform $.jsonp_callback()</button>
+        </div>
+        <div class="nine columns">
+          <h5 class="subheader">The code</h5>
+          <pre class="prettyprint linenums languague-js">
+var url = 'http://jsfiddle.net/echo/jsonp/';
+var items = ['item1', 'item2', 'item3', 'item4', 'item5'];
+
+$(&quot;#solution&quot;).click(function() {
+  $(&quot;#solution_result li&quot;).remove();
+
+  for(var i=0; i&lt;items.length; i++) {
+    var name = items[i];
+    $.jsonp_callback(url, {item_name: name}, name, function(data, item) {
+      $(&quot;&lt;li /&gt;&quot;)
+        .html('item: ' + item + ' json result: ' + data.item_name)
+        .appendTo(&quot;#solution_result&quot;);
+    });
+  }
+});</pre>
+        </div>
+      </div>
+  </div>
+
+  <hr />
+
+  <div class="row">
+    <div class="twelve columns">
+      <p class="text-right">&copy; 2012 by <a href="http://manuel.manuelles.nl/">Manuel van Rijn</a></p>
+    </div>
+  </div>
+
+  <!-- Included JS Files (Compressed) -->
+  <script src="javascripts/jquery.js"></script>
+  <script src="javascripts/prettify.js"></script>
+  <script src="javascripts/foundation.min.js"></script>
+  <<script src="http://raw.github.com/manuelvanrijn/jquery.jsonp_callback/master/dist/jquery.jsonp_callback.min.js"></script>
+
+  <!-- Initialize JS Plugins -->
+  <script src="javascripts/app.js"></script>
+
+  <script>
+    var _gaq=[['_setAccount','UA-17149124-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+  </script>
+</body>
+</html>
